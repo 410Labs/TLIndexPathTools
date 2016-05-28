@@ -321,6 +321,11 @@ NSString * kTLIndexPathUpdatesKey = @"kTLIndexPathUpdatesKey";
     if (type == NSFetchedResultsChangeUpdate) {
         [self.updatedItems addObject:anObject];
     }
+    
+    if (type==NSFetchedResultsChangeMove && indexPath == newIndexPath) {
+        [self.updatedItems addObject:anObject];
+    }
+
 }
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName
