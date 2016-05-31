@@ -301,7 +301,7 @@ const NSString *TLIndexPathDataModelNilSectionName = @"__TLIndexPathDataModelNil
 
 + (id)identifierForItem:(id)item identifierBlock:(id (^)(id))identifierBlock
 {
-    id identifier;
+    id identifier = [item valueForKey:@"identifier"];
     if (identifierBlock) {
         @try {
             identifier = identifierBlock(item);
