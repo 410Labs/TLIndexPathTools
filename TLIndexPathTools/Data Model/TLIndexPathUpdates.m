@@ -403,7 +403,15 @@
             NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
             for (id item in self.modifiedItems) {
                 NSIndexPath *indexPath = [self.updatedDataModel indexPathForItem:item];
-                [indexPaths addObject:indexPath];
+                BOOL isValid = indexPath.section < [collectionView numberOfSections] &&
+                indexPath.item < [collectionView numberOfItemsInSection:indexPath.section];
+
+                if (isValid) {
+                    [indexPaths addObject:indexPath];
+                } else {
+                    // TODO: Investigate why we even end up in this state.
+                    NSAssert(false, @"Would try to reload an item at non-existing index path");
+                }
             }
             [collectionView reloadItemsAtIndexPaths:indexPaths];
         }
