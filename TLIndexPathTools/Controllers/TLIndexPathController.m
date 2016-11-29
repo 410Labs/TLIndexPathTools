@@ -309,11 +309,10 @@ NSString * kTLIndexPathUpdatesKey = @"kTLIndexPathUpdatesKey";
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (!self.ignoreFetchedResultsChanges) {
-            self.dataModel = [self convertFetchedObjectsToDataModel];
-        }
-    });
+    assert([NSThread isMainThread]);
+    if (!self.ignoreFetchedResultsChanges) {
+        self.dataModel = [self convertFetchedObjectsToDataModel];
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
