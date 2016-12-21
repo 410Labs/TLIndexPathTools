@@ -410,6 +410,7 @@
                     [indexPaths addObject:indexPath];
                 } else {
                     // TODO: Investigate why we even end up in this state.
+                    NSLog(@"Tried to reload the item at a non-existing index path: %@", indexPath);
                 }
             }
             [collectionView reloadItemsAtIndexPaths:indexPaths];
