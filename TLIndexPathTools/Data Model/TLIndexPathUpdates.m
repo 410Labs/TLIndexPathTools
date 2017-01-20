@@ -31,20 +31,22 @@
 @interface TLIndexPathUpdates ()
 @property (copy, readwrite, nonatomic) NSArray *modifiedItems;
 @property (readwrite, nonatomic) BOOL hasChanges;
+@property (nonatomic) BOOL isFirstUpdate;
 @end
 
 @implementation TLIndexPathUpdates
 
 - (id)initWithOldDataModel:(TLIndexPathDataModel *)oldDataModel updatedDataModel:(TLIndexPathDataModel *)updatedDataModel
 {
-    return [self initWithOldDataModel:oldDataModel updatedDataModel:updatedDataModel modificationComparatorBlock:nil];
+    return [self initWithOldDataModel:oldDataModel updatedDataModel:updatedDataModel isFirstUpdate:false modificationComparatorBlock:nil];
 }
 
-- (id)initWithOldDataModel:(TLIndexPathDataModel * __nullable)oldDataModel updatedDataModel:(TLIndexPathDataModel * __nullable)updatedDataModel modificationComparatorBlock:(BOOL(^ __nullable)(id item1, id item2))modificationComparatorBlock
+- (id)initWithOldDataModel:(TLIndexPathDataModel * __nullable)oldDataModel updatedDataModel:(TLIndexPathDataModel * __nullable)updatedDataModel isFirstUpdate:(BOOL)isFirstUpdate modificationComparatorBlock:(BOOL(^ __nullable)(id item1, id item2))modificationComparatorBlock
 {
     if (self = [super init]) {
         
         _hasChanges = NO;
+        _isFirstUpdate = isFirstUpdate;
         
         _oldDataModel = oldDataModel;
         _updatedDataModel = updatedDataModel;
@@ -302,7 +304,7 @@
     //TODO this entire block of code seems to be unnecessary as of iOS 6.1.3 (it is
     //here to work around a crash on the first batch update when the collection view is
     //starting with zero items). Need to do more testing before removing.
-    if (self.oldDataModel.items.count == 0) {
+    if (self.isFirstUpdate) {
         [collectionView reloadData];
         //asking the collection view how many items it has in each section
         //resolves a bug where the collection view can sometimes be confused

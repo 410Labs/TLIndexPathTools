@@ -35,6 +35,7 @@ NSString * kTLIndexPathUpdatesKey = @"kTLIndexPathUpdatesKey";
 @property (nonatomic) BOOL performingBatchUpdate;
 @property (nonatomic) BOOL pendingConvertFetchedObjectsToDataModel;
 @property (strong, nonatomic) NSMutableArray *updatedItems;
+@property (nonatomic) BOOL hasCompletedFirstUpdate;
 @end
 
 @implementation TLIndexPathController
@@ -199,7 +200,10 @@ NSString * kTLIndexPathUpdatesKey = @"kTLIndexPathUpdatesKey";
             _dataModel = dataModel;
         }
     }
-    TLIndexPathUpdates *updates = [[TLIndexPathUpdates alloc] initWithOldDataModel:self.oldDataModel updatedDataModel:self.dataModel modificationComparatorBlock:self.modificationComparatorBlock];
+    TLIndexPathUpdates *updates = [[TLIndexPathUpdates alloc] initWithOldDataModel:self.oldDataModel
+                                                                  updatedDataModel:self.dataModel
+                                                                     isFirstUpdate:!self.hasCompletedFirstUpdate
+                                                       modificationComparatorBlock:self.modificationComparatorBlock];
     if ([self.updatedItems count]) {
         // TODO this should probably check for duplicates
         if (updates.modifiedItems) {
@@ -216,6 +220,7 @@ NSString * kTLIndexPathUpdatesKey = @"kTLIndexPathUpdatesKey";
     NSDictionary *info = @{kTLIndexPathUpdatesKey : updates};
     [[NSNotificationCenter defaultCenter] postNotificationName:kTLIndexPathControllerChangedNotification object:self userInfo:info];
     self.oldDataModel = nil;
+    self.hasCompletedFirstUpdate = true;
 }
 
 #pragma mark - Batch updates
