@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return A newly initialized TLIndexPathUpdates object.
  * @see initWithOldDataModel:updatedDataModel:
  */
-- (id)initWithOldDataModel:(TLIndexPathDataModel * __nullable)oldDataModel updatedDataModel:(TLIndexPathDataModel * __nullable)updatedDataModel modificationComparatorBlock:(BOOL(^ __nullable)(id item1, id item2))modificationComparatorBlock;
+- (id)initWithOldDataModel:(TLIndexPathDataModel * __nullable)oldDataModel updatedDataModel:(TLIndexPathDataModel * __nullable)updatedDataModel isFirstUpdate:(BOOL)isFirstUpdate modificationComparatorBlock:(BOOL(^ __nullable)(id item1, id item2))modificationComparatorBlock;
 
 #pragma mark - Performing batch updates
 
