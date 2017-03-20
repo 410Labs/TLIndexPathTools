@@ -405,7 +405,7 @@
             NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
             for (id item in self.modifiedItems) {
                 NSIndexPath *indexPath = [self.updatedDataModel indexPathForItem:item];
-                BOOL isValid = indexPath.section < [collectionView numberOfSections] &&
+                BOOL isValid = indexPath && indexPath.section < [collectionView numberOfSections] &&
                 indexPath.item < [collectionView numberOfItemsInSection:indexPath.section];
 
                 if (isValid) {
