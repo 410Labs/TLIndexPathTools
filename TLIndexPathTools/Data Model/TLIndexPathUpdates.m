@@ -401,9 +401,15 @@
         // an item is moving and reloading at the same time. The resulting animation
         // can show to versions of the cell, one version remains in the original spot
         // and fades out, while the other version slides to the new location.
-        if (self.modifiedItems.count && self.updateModifiedItems) {
+
+        NSMutableArray *objectsToReload = [[NSMutableArray alloc] init];
+        [objectsToReload addObjectsFromArray:self.modifiedItems];
+        // According to the documentation moved items should be assumed as updated.
+        [objectsToReload addObjectsFromArray:self.movedItems];
+
+        if (objectsToReload.count > 0 && self.updateModifiedItems) {
             NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-            for (id item in self.modifiedItems) {
+            for (id item in objectsToReload) {
                 NSIndexPath *indexPath = [self.updatedDataModel indexPathForItem:item];
                 BOOL isValid = indexPath && indexPath.section < [collectionView numberOfSections] &&
                 indexPath.item < [collectionView numberOfItemsInSection:indexPath.section];
